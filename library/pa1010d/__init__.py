@@ -13,6 +13,7 @@ PA1010D_ADDR = 0x10
 class PA1010D():
     __slots__ = (
         "timestamp",
+        "datestamp",
         "latitude",
         "longitude",
         "altitude",
@@ -38,6 +39,7 @@ class PA1010D():
         self._debug = debug
 
         self.timestamp = None
+        self.datestamp = None
         self.latitude = None
         self.longitude = None
         self.altitude = None
@@ -180,6 +182,7 @@ class PA1010D():
 
             # Position, velocity and time
             elif type(result) == pynmea2.RMC:
+                self.datestamp = result.datestamp
                 self.speed_over_ground = result.spd_over_grnd
                 if wait_for == "RMC":
                     return True
@@ -229,6 +232,7 @@ if __name__ == "__main__":
         if result:
             print(f"""
 Time:      {gps.timestamp}
+Date:      {gps.datestamp}
 Longitude: {gps.longitude: .5f} {gps.lon_dir}
 Latitude:  {gps.latitude: .5f} {gps.lat_dir}
 Altitude:  {gps.altitude}
